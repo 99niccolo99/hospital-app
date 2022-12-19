@@ -7,7 +7,6 @@ import Ffm from "./Charts/Ffm";
 import XcAndFmLevel from "./Charts/XcAndFmLevel";
 import HeartRespRate from "./Charts/HeartRespRate";
 import DataTable from "./DataTable";
-import Charts from "./Charts";
 import Box from "@mui/material/Box";
 import { purple } from "@mui/material/colors";
 import GridLayout from "../GridLayout";
@@ -383,7 +382,9 @@ function FetchBox(props) {
               key="1"
               data-grid={{ w: 2, h: 3, x: 0, y: 0, minW: 2, minH: 3 }}
             >
-              <Tbw patientTbwFfm={patientTbwFfm}></Tbw>
+              <Tbw 
+              handleTbwFfmChange={handleTbwFfmChange}
+              patientTbwFfm={patientTbwFfm}></Tbw>
             </Box>
           )}
 
@@ -405,6 +406,7 @@ function FetchBox(props) {
               data-grid={{ w: 2, h: 3, x: 2, y: 0, minW: 2, minH: 3 }}
             >
               <XcAndFmLevel
+              handleXcAndFmLevel={handleXcAndFmLevel}
                 patientXcAndFmLevel={patientXcAndFmLevel}
               ></XcAndFmLevel>
             </Box>
@@ -416,6 +418,7 @@ function FetchBox(props) {
               data-grid={{ w: 2, h: 3, x: 4, y: 0, minW: 2, minH: 3 }}
             >
               <HeartRespRate
+                handleHeartRespRate={handleHeartRespRate}
                 patientHeartRespRate={patientHeartRespRate}
               ></HeartRespRate>
             </Box>
@@ -427,6 +430,7 @@ function FetchBox(props) {
               data-grid={{ w: 2, h: 3, x: 6, y: 0, minW: 2, minH: 3 }}
             >
               <DataTable
+              handleDataTableChange={handleDataTableChange}
                 patientExams={patientExams.length}
                 patientExams1={patientExams}
               ></DataTable>

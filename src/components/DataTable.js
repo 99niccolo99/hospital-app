@@ -7,6 +7,11 @@ import Paper from '@mui/material/Paper';
 import { AutoSizer, Column, Table } from 'react-virtualized';
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import ClearIcon from "@mui/icons-material/Clear";
+import { red } from '@mui/material/colors';
 
 const classes = {
   flexContainer: 'ReactVirtualizedDemo-flexContainer',
@@ -170,8 +175,22 @@ export default function DataTable(props) {
   return (
     
     <React.Fragment>
+        
+<Box sx={{ height:"8%", display: "flex",
+          flexDirection: "row"}} >
+      <Typography variant="body 2" sx={{ flexGrow: 1 }}>DATA TABLE</Typography>
 
-    <Paper style={{ height: "100%", width: "100%" }}>
+<IconButton 
+          color="secondary"
+          onClick={props.handleDataTableChange}
+          size="small">
+          <ClearIcon fontSize="small" sx={{ color: red[700] }} />
+        </IconButton>
+
+        </Box>
+
+
+    <Paper style={{ height: "92%", width: "100%" }}>
       <VirtualizedTable
         rowCount={props.patientExams}
         rowGetter={({ index }) => props.patientExams1[index] }
