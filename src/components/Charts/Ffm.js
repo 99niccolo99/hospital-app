@@ -22,15 +22,11 @@ import ClearIcon from '@mui/icons-material/Clear';
 //  total body water    and   fat free mass (massa magra)
 function Ffm(props) {
 
-const themeTitle = createTheme();
-
-themeTitle.typography.h5 = {
-  
-};
 
 
   return (
     <React.Fragment>
+
 <Box sx={{ height:"8%", display: "flex",
           flexDirection: "row"}} >
       <Typography variant="body 2" sx={{ flexGrow: 1 }}>FFM values</Typography>
@@ -43,6 +39,7 @@ themeTitle.typography.h5 = {
         </IconButton>
 
         </Box>
+
 
                 <ResponsiveContainer height="92%">
                 <AreaChart
@@ -71,3 +68,4 @@ themeTitle.typography.h5 = {
 }
 
 export default Ffm;
+
