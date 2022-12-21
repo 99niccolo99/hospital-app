@@ -22,7 +22,7 @@ function Tbw(props) {
 
       <Box sx={{ height:"8%", display: "flex",
           flexDirection: "row"}} >
-      <Typography variant="body 2" sx={{ flexGrow: 1 }}>TBW values</Typography>
+      <Typography variant="body 2" sx={{ flexGrow: 1 }}>TBW</Typography>
 
 <IconButton 
           color="secondary"

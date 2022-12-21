@@ -27,7 +27,7 @@ export default function HeartRespRate(props) {
         
       <Box sx={{ height:"8%", display: "flex",
           flexDirection: "row"}} >
-      <Typography variant="body 2" sx={{ flexGrow: 1 }}>HEART-RESP RATE values</Typography>
+      <Typography variant="body 2" sx={{ flexGrow: 1 }}>HEART-RESP RATE</Typography>
 
 <IconButton 
           color="secondary"

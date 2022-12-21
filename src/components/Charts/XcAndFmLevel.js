@@ -28,7 +28,7 @@ function XcAndFmLevel(props) {
         
       <Box sx={{ height:"8%", display: "flex",
           flexDirection: "row"}} >
-      <Typography variant="body 2" sx={{ flexGrow: 1 }}>XC-FM values</Typography>
+      <Typography variant="body 2" sx={{ flexGrow: 1 }}>XC-FM</Typography>
 
 <IconButton 
           color="secondary"

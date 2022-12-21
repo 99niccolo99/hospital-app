@@ -29,7 +29,7 @@ function Ffm(props) {
 
 <Box sx={{ height:"8%", display: "flex",
           flexDirection: "row"}} >
-      <Typography variant="body 2" sx={{ flexGrow: 1 }}>FFM values</Typography>
+      <Typography variant="body 2" sx={{ flexGrow: 1 }}>FFM</Typography>
 
 <IconButton 
           color="secondary"
