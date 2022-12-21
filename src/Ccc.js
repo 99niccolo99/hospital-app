@@ -38,28 +38,31 @@ export default class Ccc extends React.PureComponent {
   render() {
     return (
       <React.Fragment>
-      <Button sx={{width:"10%", height:"10%",mb:18,mr:8}} onClick={() => this.resetLayout()}>Reset Layout</Button>
-<Box >
+
+
+      
         <ResponsiveReactGridLayout
           className="layout"
           cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
           rowHeight={30}
           layouts={this.state.layouts}
           {...this.props}
-          
+
           onLayoutChange={(layout, layouts) =>
             this.onLayoutChange(layout, layouts)
             
           } 
         >
 
-         
+ 
         </ResponsiveReactGridLayout>
-        </Box>
+        
         </React.Fragment>
     );
   }
 }
+
+//<Button sx={{width:"10%", height:"10%",mb:18,mr:8}} onClick={() => this.resetLayout()}>Reset Layout</Button>
 
 function getFromLS(key) {
   let ls = {};
