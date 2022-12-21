@@ -18,48 +18,8 @@ TRRVLA91M13Z404A
 MMRMRA89L29Z404B
 CNNCLD87A53Z404C     */
 
-  const [patientPersonalData, setPatientPersonalData] = useState({});
-  const [searchForm, setSearchForm] = useState('');
-
-  const urlPersonalData =
-    "http://localhost:8080/hospital/api/patients/";
-
-  const fetchPersonalData = () => {
-
-    const fiscalCode = searchForm; 
-
-    let x = {};
-
-    fetch(urlPersonalData+fiscalCode , {
-      method: "GET",
-      mode: "cors",
-      headers: {
-        accept: "application/json",
-      },
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        
-          x = {
-            name: data.givenName,
-            gender: data.gender,
-            birthDate: data.birthDate,
-            surname: data.familyName,
-          };
-        
-
-        setPatientPersonalData(() => {
-          return {...x};
-        });
-      });
-  };
 
 
-  const onSearch = (event) => {
-    setSearchForm(event.target.value);
-  };
 
 
   return (
@@ -88,29 +48,15 @@ CNNCLD87A53Z404C     */
       </IconButton>
 
 
-        <Button
-          variant="outlined"
-          sx={{ mt: 2, ml: 2 ,width:20, height:30 }}
-          onClick={fetchPersonalData}
-        >
-          Search
-        </Button>
-        <TextField
-          id="filled-basic"
-          label="fiscal code"
-          type="Filled"
-          variant="filled"
-          size="small"
-          sx={{ml:2, mb:4, mt:3, width:150, height:30 }}
-          onChange={onSearch}
-        />
+        
    
 
           <UserData
-            name={patientPersonalData.name}
-            surname={patientPersonalData.surname}
-            gender={patientPersonalData.gender}
-            birthDate={patientPersonalData.birthDate}
+            avatar={props.avatar}
+            name={props.name}
+            surname={props.surname}
+            gender={props.gender}
+            birthDate={props.birthDate}
           ></UserData>
         </Box>
       )}

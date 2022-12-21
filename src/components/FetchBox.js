@@ -13,7 +13,7 @@ import GridLayout from "../GridLayout";
 import { cyan } from "@mui/material/colors";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import IconButton from "@mui/material/IconButton";
-import ClearIcon from "@mui/icons-material/Clear";
+import Input from '@mui/material/Input';
 import {
   AreaChart,
   Area,
@@ -31,6 +31,7 @@ import LateralBar from "./LateralBar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Fade from "@mui/material/Fade";
+import TextField from "@mui/material/TextField";
 
 const cyanTheme = createTheme({
   palette: {
@@ -57,15 +58,17 @@ function FetchBox(props) {
   const [patientExams, setPatientExams] = useState([{}]);
 
   const urlHealthData =
-    "http://localhost:8080/hospital/api/complex/basic/TRRVLA91M13Z404A";
+    "http://localhost:8080/hospital/api/complex/basic/";
 
   //----------------------------------------------------------------
   const urlBalanceData =
-    "http://localhost:8080/hospital/api/balance/TRRVLA91M13Z404A";
+    "http://localhost:8080/hospital/api/balance/";
 
   const fetchTbwFfm = () => {
     let x = [{}];
-    fetch(urlBalanceData, {
+    const fiscalCode = searchForm;
+
+    fetch(urlBalanceData +fiscalCode, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -106,7 +109,9 @@ function FetchBox(props) {
 
   const fetchXcAndFmLevel = () => {
     let x = [{}];
-    fetch(urlBalanceData, {
+    const fiscalCode = searchForm;
+
+    fetch(urlBalanceData +fiscalCode, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -148,8 +153,9 @@ function FetchBox(props) {
   //fetch Heart rate
   const fetchHeartRate = () => {
     let x = [];
+    const fiscalCode = searchForm;
 
-    fetch(urlHealthData, {
+    fetch(urlHealthData + fiscalCode, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -181,8 +187,9 @@ function FetchBox(props) {
   //fetch Resp rate
   const fetchRespRate = () => {
     let x = [];
+    const fiscalCode = searchForm;
 
-    fetch(urlHealthData, {
+    fetch(urlHealthData +fiscalCode, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -248,8 +255,10 @@ function FetchBox(props) {
   //----------------------------------------------------------------
 
   const fetchBalanceData = () => {
+    const fiscalCode = searchForm;
     let x = [];
-    fetch(urlBalanceData, {
+
+    fetch(urlBalanceData + fiscalCode, {
       method: "GET",
       mode: "cors",
       headers: {
@@ -294,7 +303,7 @@ function FetchBox(props) {
   //----------------------------------------------------------------
 
   //barra laterale che sparisce e ricompare premendo il bottone apposito
-  const [lateralBar, setLateralBar] = useState(true);
+  const [lateralBar, setLateralBar] = useState(false);
 
   const onSpaceFree = () => {
     setLateralBar(false);
@@ -318,22 +327,73 @@ function FetchBox(props) {
   };
 
   //----------------------------------------------------------------------
+  //Search management
+
+  const [patientPersonalData, setPatientPersonalData] = useState({});
+
+  const urlPersonalData = "http://localhost:8080/hospital/api/patients/";
+
+  const fetchPersonalData = () => {
+    const fiscalCode = searchForm;
+
+    let x = {};
+
+    fetch(urlPersonalData + fiscalCode, {
+      method: "GET",
+      mode: "cors",
+      headers: {
+        accept: "application/json",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        x = {
+          name: data.givenName,
+          gender: data.gender,
+          birthDate: data.birthDate,
+          surname: data.familyName,
+          avatar: "data:"+ data.avatarType +
+          ";base64," + data.avatar ,
+        };
+
+        setPatientPersonalData(() => {
+          return { ...x };
+        });
+      });
+  };
+
+  const [searchForm, setSearchForm] = useState("");
+
+  const onSearch = (event) => {
+    setSearchForm(event.target.value);
+  };
+
+  //----------------------------------------------------------------------
+
   return (
     <React.Fragment>
       <Box
         sx={{
-          display: "flex",
+          display: "inline-flex",
           flexDirection: "row",
           height: "100vh",
+          width: "100%",
           mt: 8,
         }}
       >
         <LateralBar
           lateralBar={lateralBar}
           onSpaceFree={onSpaceFree}
+          avatar={patientPersonalData.avatar}
+          name={patientPersonalData.name}
+          surname={patientPersonalData.surname}
+          gender={patientPersonalData.gender}
+          birthDate={patientPersonalData.birthDate}
         ></LateralBar>
 
-        <AppBar theme={cyanTheme} sx={{ height: "10%" }}>
+        <AppBar theme={cyanTheme} >
           <Toolbar>
             {!lateralBar && (
               <IconButton
@@ -346,52 +406,83 @@ function FetchBox(props) {
               </IconButton>
             )}
 
-            <Button onClick={handleClick} color="primary">Dashboard</Button>
 
-            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+            <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+              <Button  onClick={handleClick} color="primary">
+                Dashboard
+              </Button>
 
+              <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+                <MenuItem onClick={handleTbwFfmChange}>
+                  TBW AND FFM
+                  <Checkbox checked={tbwFfm} onChange={handleTbwFfmChange} />
+                </MenuItem>
+
+                <MenuItem onClick={handleXcAndFmLevel}>
+                  XC AND FM
+                  <Checkbox
+                    checked={xcAndFmLevel}
+                    onChange={handleXcAndFmLevel}
+                  />
+                </MenuItem>
+
+                <MenuItem onClick={handleHeartRespRate}>
+                  HEART AND RESP RATE
+                  <Checkbox
+                    checked={heartRespRate}
+                    onChange={handleHeartRespRate}
+                  />
+                </MenuItem>
+
+                <MenuItem onClick={handleDataTableChange}>
+                  BALANCE DATA TABLE
+                  <Checkbox
+                    checked={dataTable}
+                    onChange={handleDataTableChange}
+                  />
+                </MenuItem>
+              </Menu>
+          
+
+
+              <Button
+                variant="outlined"
+                sx={{ml:20, height: 30 }}
+                onClick={fetchPersonalData}
+              >
+                Search
+              </Button>
+
+<Input placeholder="fiscal code" sx={{ml:5}}  onChange={onSearch} />
             
-              <MenuItem onClick={handleTbwFfmChange}>
-              TBW AND FFM
-                <Checkbox checked={tbwFfm} onChange={handleTbwFfmChange} />
-              </MenuItem>
-            
-              <MenuItem onClick={handleXcAndFmLevel}>
-              XC AND FM
-                <Checkbox checked={xcAndFmLevel} onChange={handleXcAndFmLevel} />
-              </MenuItem>
+            </Box>
 
-              <MenuItem onClick={handleHeartRespRate}>
-              HEART AND RESP RATE
-                <Checkbox checked={heartRespRate} onChange={handleHeartRespRate}  />
-              </MenuItem>
-
-              <MenuItem onClick={handleDataTableChange}>
-              BALANCE DATA TABLE
-                <Checkbox checked={dataTable} onChange={handleDataTableChange}  />
-              </MenuItem>
-
-
-            </Menu>
           </Toolbar>
         </AppBar>
 
+<Box sx={{width:"150%"}}>
         <Ccc>
           {tbwFfm && (
             <Box
               key="1"
-              data-grid={{ w: 2, h: 3, x: 0, y: 0, minW: 2, minH: 3 }}
+              data-grid={{ w: 2, h: 4, x: 0, y: 0, minW: 2, minH: 4 }}
             >
-              <Tbw 
-              handleTbwFfmChange={handleTbwFfmChange}
-              patientTbwFfm={patientTbwFfm}></Tbw>
+              <Tbw
+                handleTbwFfmChange={handleTbwFfmChange}
+                patientTbwFfm={patientTbwFfm}
+              ></Tbw>
             </Box>
           )}
 
           {tbwFfm && (
             <Box
               key="5"
-              data-grid={{ w: 2, h: 3, x: 2, y: 0, minW: 2, minH: 3 }}
+              data-grid={{ w: 2, h: 4, x: 2, y: 0, minW: 2, minH: 4 }}
             >
               <Ffm
                 handleTbwFfmChange={handleTbwFfmChange}
@@ -403,10 +494,10 @@ function FetchBox(props) {
           {xcAndFmLevel && (
             <Box
               key="2"
-              data-grid={{ w: 2, h: 3, x: 2, y: 0, minW: 2, minH: 3 }}
+              data-grid={{ w: 2, h: 4, x: 4, y: 0, minW: 2, minH: 4 }}
             >
               <XcAndFmLevel
-              handleXcAndFmLevel={handleXcAndFmLevel}
+                handleXcAndFmLevel={handleXcAndFmLevel}
                 patientXcAndFmLevel={patientXcAndFmLevel}
               ></XcAndFmLevel>
             </Box>
@@ -415,7 +506,7 @@ function FetchBox(props) {
           {heartRespRate && (
             <Box
               key="3"
-              data-grid={{ w: 2, h: 3, x: 4, y: 0, minW: 2, minH: 3 }}
+              data-grid={{ w: 3, h: 4, x: 6, y: 0, minW: 3, minH: 4 }}
             >
               <HeartRespRate
                 handleHeartRespRate={handleHeartRespRate}
@@ -427,17 +518,19 @@ function FetchBox(props) {
           {dataTable && (
             <Box
               key="4"
-              data-grid={{ w: 2, h: 3, x: 6, y: 0, minW: 2, minH: 3 }}
+              data-grid={{ w: 5, h: 5, x: 0, y: 4, minW: 5, minH: 5 }}
             >
               <DataTable
-              handleDataTableChange={handleDataTableChange}
+                handleDataTableChange={handleDataTableChange}
                 patientExams={patientExams.length}
                 patientExams1={patientExams}
               ></DataTable>
             </Box>
           )}
         </Ccc>
+        </Box>
       </Box>
+
     </React.Fragment>
   );
 }
